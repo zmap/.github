@@ -2,14 +2,12 @@
 
 ## Welcome
 
-We've found users commonly use both [ZMap](https://github.com/zmap/zmap) and [ZGrab2](https://github.com/zmap/zgrab2) together in a measurement pipeline for efficient port probing and protocol scanning.
-Services on the internet are often quite ephemeral and ensureing ZGrab2 scans immediately after ZMap helps ensure we scan services while they're still up.
+We've found users commonly use both [ZMap](https://github.com/zmap/zmap) and [ZGrab2](https://github.com/zmap/zgrab2) together in a measurement pipeline for efficient port probing and protocol scanning.  Services on the internet are often quite ephemeral and ensureing ZGrab2 scans immediately after ZMap helps ensure we scan services while they're still up.
 
 - ZMap is a fast L4 scanner that by default sends out TCP SYN packets to elicit a response from internet hosts. It can scan the entire IPv4 space in 45 mins with 1 Gb/s links.
 - ZGrab2 is a modular application-layer scanner with support for common protocols like `ssh`, `http`, and many others.
 
-We have Getting Started guides for [ZMap](https://github.com/zmap/zmap/wiki/Getting-Started-Guide) with a bit more details about ZMap specficially.
-This guide is for people brand new to internet measurement who want to use these tools in a pipeline or who'd like some pointers to helpful CLI utilities and techniques.
+We have Getting Started guides for [ZMap](https://github.com/zmap/zmap/wiki/Getting-Started-Guide) with a bit more details about ZMap specficially. This guide is for people brand new to internet measurement who want to use these tools in a pipeline or who'd like some pointers to helpful CLI utilities and techniques.
 
 > [!NOTE]
 >I'd encourage you to read this document in full as it includes helpful insights and motivations gained through using the tools for some time that will help you make more informed decisions while scanning.
@@ -220,16 +218,7 @@ The smaller the target space, the more load any given router will see based on y
 
 At 1 Gb/s, a single IP would see a probe once in every 45 minutes,  a /16 would see 24 packets per second (imagine a router that serves a /16, it has to forward all ZMap probes to every host behind it), and a /24 subnet would see a packet every 10 seconds.
 
-As rules of thumb, here are the corresponding packets per second for smaller subnets such that any given subnet would see the same load as a full IPv4 scan at 1 Gb/s:
-
-| Subnet Size                   | Bandwidth (--bandwidth) | Scan Rate in pps (--rate)           |
-| ----------------------------- | ----------------------- | ----------------------------------- |
-| 0.0.0.0/0 (Entire IPv4 Space) | 1 Gb/s                  |                                     |
-| 0.0.0.0/8                     | 3.9                     |                                     |
-| 0.0.0.0/16                    |                         |                                     |
-| 0.0.0.0/24                    |                         |                                     |
-
-10 Gb/s is likely the upper limit of what you'd want to scan the entire IPv4 space, a /16 router would see 220 packets per second and a /24 router would see ~1 packet per second. I personally take 1 packet per second per /24 subnet as a hard upper bound.
+I personally take 1 packet per second per /24 subnet as a hard upper bound. You'll need to work out the scan rate (`--rate`) for your target size accordingly.
 
 ### Example - /16
 
